@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:collectflow-test;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  mail:
+    host: localhost
+    port: 1025
+
+app:
+  jwt:
+    secret: collectflow-test-secret-key-for-junit-only-0123456789
+    ttl-hours: 1
+  reminders:
+    cron: "-"
+  notifications:
+    email-enabled: false
+    from: no-reply@collectflow.test
+  seed-demo-data: false
+
+logging:
+  level:
+    org.hibernate.SQL: WARN
+    com.collectflow: INFO

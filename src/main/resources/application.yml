@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: collectflow-backend
+  # Local database credentials live in application-local.yml (git-ignored).
+  config:
+    import: optional:file:./application-local.yml
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:collectflow}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_SMTP_AUTH:false}
+          starttls:
+            enable: ${MAIL_STARTTLS:false}
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+server:
+  # Override with SERVER_PORT in deployment environments.
+  port: 8080
+  error:
+    include-message: always
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:collectflow-local-development-secret-key-change-me-0123456789}
+    ttl-hours: ${JWT_TTL_HOURS:168}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
+  notifications:
+    email-enabled: ${EMAIL_ENABLED:false}
+    from: ${MAIL_FROM:no-reply@collectflow.app}
+  reminders:
+    cron: ${REMINDER_CRON:0 0 8 * * *}
+    default-recovery-days: 30
+  seed-demo-data: ${SEED_DEMO_DATA:true}
+
+logging:
+  level:
+    com.collectflow: INFO
